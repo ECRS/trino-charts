@@ -215,6 +215,9 @@ coordinator:
     # failureThreshold: 6
     # successThreshold: 1
 
+  terminationGracePeriodSeconds: ""
+  lifecycle: {}
+
   nodeSelector: {}
 
   tolerations: []
@@ -274,6 +277,9 @@ worker:
     # timeoutSeconds: 5
     # failureThreshold: 6
     # successThreshold: 1
+
+  terminationGracePeriodSeconds: ""
+  lifecycle: {}
 
   nodeSelector: {}
 
