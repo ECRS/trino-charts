@@ -57,6 +57,23 @@ spec:
         - name: schemas-volume
           configMap:
             name: schemas-volume-worker
+        {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
+        - name: access-control-volume
+          configMap:
+            name: trino-access-control-volume-coordinator
+        {{- end }}{{- end }}
+        {{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+        - name: password-volume
+          secret:
+            secretName: trino-password-authentication
+            items:
+              - key: password.db
+                path: password.db
+              {{- if .Values.auth.groups }}
+              - key: group.db
+                path: group.db
+              {{- end }}
+        {{- end }}
         {{- range .Values.secretMounts }}
         - name: {{ .name }}
           secret:
@@ -89,6 +106,10 @@ spec:
               name: catalog-volume
             - mountPath: {{ .Values.kafka.mountPath }}
               name: schemas-volume
+            {{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
+            - mountPath: {{ .Values.server.config.path }}/access-control
+              name: access-control-volume
+            {{- end }}{{- end }}
             {{- range .Values.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}
@@ -96,6 +117,10 @@ spec:
             {{- range .Values.worker.secretMounts }}
             - name: {{ .name }}
               mountPath: {{ .path }}
+            {{- end }}
+            {{- if eq .Values.server.config.authenticationType "PASSWORD" }}
+            - mountPath: {{ .Values.server.config.path }}/auth
+              name: password-volume
             {{- end }}
           ports:
             - name: http
