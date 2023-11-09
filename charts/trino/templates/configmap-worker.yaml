@@ -57,6 +57,15 @@ data:
   {{- end }}
   {{ .Values.server.workerExtraConfig | indent 4 }}
 
+{{- if .Values.accessControl }}{{- if eq .Values.accessControl.type "configmap" }}
+  access-control.properties: |
+    access-control.name=file
+    {{- if .Values.accessControl.refreshPeriod }}
+    security.refresh-period={{ .Values.accessControl.refreshPeriod }}
+    {{- end }}
+    security.config-file={{ .Values.server.config.path }}/access-control/{{ .Values.accessControl.configFile | default "rules.json" }}
+{{- end }}{{- end }}
+
   exchange-manager.properties: |
     exchange-manager.name={{ .Values.server.exchangeManager.name }}
   {{ if eq .Values.server.exchangeManager.name  "filesystem" }}
