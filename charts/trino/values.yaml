@@ -481,9 +481,6 @@ coordinator:
 
   terminationGracePeriodSeconds: 30
 
-  terminationGracePeriodSeconds: ""
-  lifecycle: {}
-
   nodeSelector: {}
 
   tolerations: []
@@ -628,9 +625,6 @@ worker:
   # ```
 
   terminationGracePeriodSeconds: 30
-
-  terminationGracePeriodSeconds: ""
-  lifecycle: {}
 
   nodeSelector: {}
 
