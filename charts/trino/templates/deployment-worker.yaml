@@ -137,6 +137,7 @@ spec:
             {{- end }}
             {{- with .Values.worker.additionalVolumeMounts }}
             {{- . | toYaml | nindent 12 }}
+            {{- end }}
             {{- if eq .Values.server.config.authenticationType "PASSWORD" }}
             - mountPath: {{ .Values.server.config.path }}/auth
               name: password-volume
